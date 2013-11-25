@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="assets/css/global.css" type="text/css">
+
+<?php
+    mysql_connect('localhost','root');
+    mysql_select_db('messages');
+    
+    $query = "SELECT * FROM message";
+    $result = mysql_query($query);
+?>
+
+<div class='container'>
+    <div class='row'>
+        <div class='span12 columns' style='margin-top:20px'>
+            <h1>Sent Messages</h1>
+            <a href='index.php'>Create Messages</a>
+        </div>
+        
+        <div class='span12 columns'>
+            <div class='span12'>
+<table class='table table-striped table-bordered table-condensed' style='margin-top:30px'>
+    <tr>
+        <td><b>Name</b></td>
+        <td><b>Email</b></td>
+        <td><b>Message</b></td>
+        <td><b>Date</b></td>
+        <td><b>Is Approved</b></td>
+        <td colspan="2"><b>Action</b></td>
+    </tr>
+<?php 
+    if($result){
+        while($fetch = mysql_fetch_assoc($result)){
+?>
+    
+    <tr>
+        <td><?php echo $fetch['name'];?></td>
+        <td><?php echo $fetch['email'];?></td>
+        <td><?php echo $fetch['message'];?></td>
+        <td><?php echo $fetch['date'];?></td>
+        <td><?php echo $fetch['is_approved'];?></td>
+        
+        <?php 
+            if($fetch['is_approved'] == "n"){
+            
+        ?>
+        <td><a href="approved.php?id=<?=$fetch['id']?>" class='btn btn-primary'>Approved</a></b></td>
+        <?php 
+            }else{
+        ?>
+        <td><a href="disapproved.php?id=<?=$fetch['id']?>" class='btn btn-success'>Reject</a></b></td>
+        <?php 
+            }
+        ?>
+        <td><a href="delete.php?id=<?=$fetch['id']?>" class='btn btn-danger'>Delete</a></td>
+    </tr>
+    
+    <?php
+        
+        }
+    }
+    ?>
+</table>
+</div>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/jquery-1.7.1.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/admin.min.js"></script>
